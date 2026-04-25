@@ -21,69 +21,6 @@
     touch-action: none;
   }
 
-  /* ─── BAŞLANGIÇ ─── */
-  #intro {
-    position: fixed;
-    inset: 0;
-    background: #0a0a0a;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-    z-index: 100;
-    padding: 40px 30px;
-    transition: opacity 1.5s ease;
-  }
-
-  #intro .names {
-    font-family: 'Dancing Script', cursive;
-    font-size: 13vw;
-    color: #fff;
-    text-align: center;
-    letter-spacing: 2px;
-    line-height: 1.2;
-    opacity: 0;
-    animation: fadeUp 1.5s ease 0.4s forwards;
-  }
-
-  #intro .date {
-    font-family: 'Lato', sans-serif;
-    font-size: 3.2vw;
-    color: rgba(255,200,180,0.8);
-    letter-spacing: 5px;
-    text-transform: uppercase;
-    margin-top: 14px;
-    text-align: center;
-    opacity: 0;
-    animation: fadeUp 1.5s ease 1s forwards;
-  }
-
-  #intro .heart-pulse {
-    font-size: 10vw;
-    margin-top: 30px;
-    opacity: 0;
-    animation: fadeUp 1s ease 1.8s forwards, pulse 1.5s ease 3s infinite;
-  }
-
-  #intro .start-btn {
-    margin-top: 50px;
-    padding: 18px 0;
-    width: 75%;
-    max-width: 280px;
-    border: 1px solid rgba(255,255,255,0.35);
-    background: transparent;
-    color: #fff;
-    font-family: 'Lato', sans-serif;
-    font-size: 3.8vw;
-    letter-spacing: 4px;
-    text-transform: uppercase;
-    border-radius: 50px;
-    cursor: pointer;
-    opacity: 0;
-    animation: fadeUp 1s ease 2.3s forwards;
-    -webkit-appearance: none;
-  }
-
   /* ─── SLİDESHOW ─── */
   #slideshow {
     position: fixed;
@@ -418,16 +355,8 @@
 <!-- YouTube gizli oynatıcı -->
 <div id="yt-player" style="position:fixed;width:1px;height:1px;top:0;left:-9999px;pointer-events:none;overflow:hidden;"></div>
 
-<!-- BAŞLANGIÇ -->
-<div id="intro">
-  <div class="names">Melike<br>&<br>Serkan</div>
-  <div class="date">10 · 05 · 2021</div>
-  <div class="heart-pulse">♥</div>
-  <button class="start-btn" onclick="startShow()">Hikayemize Başla</button>
-</div>
-
 <!-- SLİDESHOW -->
-<div id="slideshow"></div>
+<div id="slideshow" style="opacity:1"></div>
 
 <!-- PROGRESS -->
 <div id="progress"></div>
@@ -543,18 +472,11 @@ function buildSlides() {
   });
 }
 
-// Başlat
+// Otomatik başlat
 function startShow() {
-  const intro = document.getElementById('intro');
-  intro.style.opacity = '0';
-  intro.style.pointerEvents = 'none';
-  setTimeout(() => {
-    intro.style.display = 'none';
-    document.getElementById('slideshow').style.opacity = '1';
-    document.getElementById('progress').classList.add('visible');
-    slideshowActive = true;
-    nextSlide();
-  }, 1500);
+  document.getElementById('progress').classList.add('visible');
+  slideshowActive = true;
+  nextSlide();
 }
 
 // Sonraki slayt
@@ -729,6 +651,7 @@ document.addEventListener('keydown', e => {
 });
 
 buildSlides();
+setTimeout(startShow, 800);
 </script>
 </body>
 </html>
