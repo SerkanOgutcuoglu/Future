@@ -118,7 +118,7 @@
     object-position: center;
   }
   .slide.active .slide-img {
-    animation: kenBurnsImg 9s ease forwards;
+    animation: kenBurnsImg 6s ease forwards;
   }
 
   .slide-overlay {
@@ -389,7 +389,19 @@
   }
   @keyframes kenBurnsImg {
     0%   { transform: scale(1.0); }
-    100% { transform: scale(1.04); }
+    100% { transform: scale(1.10); }
+  }
+
+  /* ─── OTOMATİK GEÇİŞ PROGRESS BAR ─── */
+  #progress-bar {
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    height: 2px;
+    width: 0%;
+    background: rgba(255,255,255,0.6);
+    z-index: 60;
+    transition: none;
   }
   @keyframes pulse {
     0%, 100% { transform: scale(1); }
@@ -419,7 +431,7 @@
 
 <!-- PROGRESS -->
 <div id="progress"></div>
-<div id="tap-hint">Devam için dokun</div>
+<div id="progress-bar"></div>
 
 <!-- TEKLİF -->
 <div id="proposal">
@@ -464,6 +476,8 @@ const slides = [
 let current = -1;
 let animating = false;
 let slideshowActive = false;
+let autoTimer = null;
+const SLIDE_DURATION = 6000;
 
 // ─── YOUTUBE API ───
 var ytPlayer = null;
@@ -538,7 +552,6 @@ function startShow() {
     intro.style.display = 'none';
     document.getElementById('slideshow').style.opacity = '1';
     document.getElementById('progress').classList.add('visible');
-    document.getElementById('tap-hint').classList.add('visible');
     slideshowActive = true;
     nextSlide();
   }, 1500);
@@ -566,11 +579,29 @@ function nextSlide() {
   const dot = document.getElementById('dot-' + current);
   if (dot) dot.classList.add('active');
 
+  startProgressBar();
+
   setTimeout(() => { animating = false; }, 1400);
+
+  autoTimer = setTimeout(nextSlide, SLIDE_DURATION);
+}
+
+function startProgressBar() {
+  const bar = document.getElementById('progress-bar');
+  bar.style.transition = 'none';
+  bar.style.width = '0%';
+  requestAnimationFrame(() => {
+    requestAnimationFrame(() => {
+      bar.style.transition = `width ${SLIDE_DURATION}ms linear`;
+      bar.style.width = '100%';
+    });
+  });
 }
 
 // Teklif sahnesi
 function showProposal() {
+  clearTimeout(autoTimer);
+  document.getElementById('progress-bar').style.width = '0%';
   document.getElementById('slideshow').style.opacity = '0';
   document.getElementById('progress').classList.remove('visible');
   document.getElementById('tap-hint').classList.remove('visible');
