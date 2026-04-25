@@ -228,16 +228,21 @@
   .screen { display: none; }
   .screen.active { display: block; }
 
-  .fade-out {
-    animation: fadeOut 0.8s ease forwards;
+  #blackout {
+    position: fixed;
+    inset: 0;
+    background: #000;
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity 1s ease;
+    z-index: 9999;
   }
-  @keyframes fadeOut {
-    to { opacity: 0; transform: scale(0.97); }
-  }
+  #blackout.active { opacity: 1; }
 </style>
 </head>
 <body>
 
+<div id="blackout"></div>
 <div class="card" id="main-card">
 
   <!-- EKRAN 1: İSİM -->
@@ -479,10 +484,10 @@ function startLoading() {
       setTimeout(tick, 900);
     } else {
       setTimeout(() => {
-        document.getElementById('main-card').classList.add('fade-out');
+        document.getElementById('blackout').classList.add('active');
         setTimeout(() => {
           window.location.href = 'evlilik-teklifi.html';
-        }, 800);
+        }, 1000);
       }, 600);
     }
   }
