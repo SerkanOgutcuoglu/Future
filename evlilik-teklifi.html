@@ -411,6 +411,7 @@ const SLIDE_DURATION = 6000;
 // ─── YOUTUBE API ───
 var ytPlayer = null;
 var ytReady  = false;
+var userTouched = false;
 
 (function() {
   var tag = document.createElement('script');
@@ -431,14 +432,20 @@ function onYouTubeIframeAPIReady() {
     events: {
       onReady: function(e) {
         ytReady = true;
-        e.target.playVideo(); // sessiz başlar, tarayıcı izin verir
+        e.target.playVideo();
+        // Eğer kullanıcı zaten dokunmuşsa hemen sesi aç
+        if (userTouched) {
+          e.target.unMute();
+          e.target.setVolume(70);
+        }
       }
     }
   });
 }
 
-// İlk dokunuşta sesi aç
+// İlk dokunuşta sesi aç — player hazır değilse onReady halleder
 function unmuteOnFirstTouch() {
+  userTouched = true;
   if (ytPlayer && ytReady) {
     ytPlayer.unMute();
     ytPlayer.setVolume(70);
