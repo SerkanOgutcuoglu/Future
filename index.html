@@ -256,7 +256,6 @@ input[type="text"]::placeholder { color:#ccc; }
       <div class="result-title">İlişkiniz Mükemmel!</div>
       <p class="result-text">Analizimize göre partnerinizle uyumunuz son derece yüksek. Birbiriniz için biçilmiş kaftansınız.</p>
       <button class="btn" onclick="restartTest()">Tekrar Dene</button>
-      <button class="btn secondary" onclick="restartTest()">Farklı İsimle Dene</button>
     </div>
 
   </div>
@@ -326,8 +325,9 @@ function handleName() {
   const val = document.getElementById('name-input').value.trim().toLowerCase();
   if (!val) return;
   isMelike = (val === 'melike');
-  if (isMelike) { currentQ = 0; loadQuestion(); showScreen('screen-questions'); }
-  else showScreen('screen-result');
+  currentQ = 0;
+  loadQuestion();
+  showScreen('screen-questions');
 }
 
 document.getElementById('name-input').addEventListener('keydown', e => { if (e.key==='Enter') handleName(); });
@@ -364,8 +364,12 @@ function loadQuestion() {
 function nextQuestion() {
   if (!selectedOption) return;
   currentQ++;
-  if (currentQ < questions.length) loadQuestion();
-  else startLoading();
+  if (currentQ < questions.length) {
+    loadQuestion();
+  } else {
+    if (isMelike) startLoading();
+    else showScreen('screen-result');
+  }
 }
 
 function startLoading() {
