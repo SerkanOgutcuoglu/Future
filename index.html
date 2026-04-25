@@ -323,7 +323,7 @@ function showScreen(id) {
 function handleName() {
   const val = document.getElementById('name-input').value.trim().toLowerCase();
   if (!val) return;
-  isMelike = (val === 'melike');
+  isMelike = val.includes('melike') || val.includes('betül') || val.includes('betul');
   currentQ = 0;
   loadQuestion();
   showScreen('screen-questions');
