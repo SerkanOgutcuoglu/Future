@@ -3,399 +3,314 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<meta name="apple-mobile-web-app-capable" content="yes">
 <title>İlişki Bağı Testi</title>
 <style>
-  @import url('https://fonts.googleapis.com/css2?family=Nunito:wght@300;400;600;700;800&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Nunito:wght@300;400;600;700;800&family=Playfair+Display:ital,wght@0,400;0,700;1,400&family=Dancing+Script:wght@400;700&family=Lato:wght@300;400&display=swap');
 
-  * { margin: 0; padding: 0; box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
+* { margin:0; padding:0; box-sizing:border-box; -webkit-tap-highlight-color:transparent; }
+html, body { height:100%; overflow:hidden; }
 
-  body {
-    font-family: 'Nunito', sans-serif;
-    background: #fdf4f9;
-    min-height: 100vh;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    overflow: hidden;
-  }
+/* ════════════════════════════════
+   ANKET BÖLÜMÜ
+════════════════════════════════ */
+#survey-wrapper {
+  position: fixed;
+  inset: 0;
+  background: #fdf4f9;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-family: 'Nunito', sans-serif;
+  z-index: 10;
+  transition: opacity 1s ease;
+}
+#survey-wrapper.hide { opacity:0; pointer-events:none; }
 
-  /* ─── KART ─── */
-  .card {
-    background: #fff;
-    border-radius: 28px;
-    padding: 44px 36px;
-    width: 92%;
-    max-width: 400px;
-    box-shadow: 0 8px 40px rgba(233,30,99,0.10);
-    position: relative;
-    animation: cardIn 0.5s ease forwards;
-  }
+.card {
+  background: #fff;
+  border-radius: 28px;
+  padding: 44px 36px;
+  width: 92%;
+  max-width: 400px;
+  box-shadow: 0 8px 40px rgba(233,30,99,0.10);
+  animation: cardIn 0.5s ease forwards;
+  max-height: 90vh;
+  overflow-y: auto;
+}
+@keyframes cardIn {
+  from { opacity:0; transform:translateY(24px); }
+  to   { opacity:1; transform:translateY(0); }
+}
 
-  @keyframes cardIn {
-    from { opacity: 0; transform: translateY(24px); }
-    to   { opacity: 1; transform: translateY(0); }
-  }
+.logo       { text-align:center; font-size:2.2rem; margin-bottom:6px; }
+.site-name  { text-align:center; font-size:1.1rem; font-weight:800; color:#e91e63; letter-spacing:1px; margin-bottom:4px; }
+.site-sub   { text-align:center; font-size:0.78rem; color:#aaa; margin-bottom:32px; letter-spacing:0.5px; }
+h2          { font-size:1.15rem; font-weight:700; color:#333; margin-bottom:8px; line-height:1.4; }
+.desc       { font-size:0.85rem; color:#999; margin-bottom:26px; line-height:1.6; }
 
-  .logo {
-    text-align: center;
-    font-size: 2.2rem;
-    margin-bottom: 6px;
-  }
-  .site-name {
-    text-align: center;
-    font-size: 1.1rem;
-    font-weight: 800;
-    color: #e91e63;
-    letter-spacing: 1px;
-    margin-bottom: 4px;
-  }
-  .site-sub {
-    text-align: center;
-    font-size: 0.78rem;
-    color: #aaa;
-    margin-bottom: 32px;
-    letter-spacing: 0.5px;
-  }
+.input-wrap { position:relative; margin-bottom:20px; }
+input[type="text"] {
+  width:100%; padding:16px 20px;
+  border:2px solid #f0d6e8; border-radius:14px;
+  font-family:'Nunito',sans-serif; font-size:1rem;
+  color:#333; background:#fff9fc; outline:none;
+  transition:border-color 0.3s; -webkit-appearance:none;
+}
+input[type="text"]:focus { border-color:#e91e63; }
+input[type="text"]::placeholder { color:#ccc; }
 
-  h2 {
-    font-size: 1.15rem;
-    font-weight: 700;
-    color: #333;
-    margin-bottom: 8px;
-    line-height: 1.4;
-  }
-  .desc {
-    font-size: 0.85rem;
-    color: #999;
-    margin-bottom: 26px;
-    line-height: 1.6;
-  }
+.btn {
+  width:100%; padding:17px;
+  background:linear-gradient(135deg,#e91e63,#c2185b);
+  color:#fff; border:none; border-radius:14px;
+  font-family:'Nunito',sans-serif; font-size:1rem; font-weight:700;
+  cursor:pointer; transition:transform 0.2s;
+  box-shadow:0 4px 20px rgba(233,30,99,0.3);
+  -webkit-appearance:none; letter-spacing:0.5px;
+}
+.btn:active { transform:scale(0.98); }
+.btn.secondary {
+  background:linear-gradient(135deg,#f8bbd0,#f48fb1);
+  box-shadow:0 4px 20px rgba(233,30,99,0.15);
+  margin-top:12px;
+}
 
-  /* ─── INPUT ─── */
-  .input-wrap {
-    position: relative;
-    margin-bottom: 20px;
-  }
-  input[type="text"] {
-    width: 100%;
-    padding: 16px 20px;
-    border: 2px solid #f0d6e8;
-    border-radius: 14px;
-    font-family: 'Nunito', sans-serif;
-    font-size: 1rem;
-    color: #333;
-    background: #fff9fc;
-    outline: none;
-    transition: border-color 0.3s;
-    -webkit-appearance: none;
-  }
-  input[type="text"]:focus { border-color: #e91e63; }
-  input[type="text"]::placeholder { color: #ccc; }
+.progress-wrap   { margin-bottom:28px; }
+.progress-label  { display:flex; justify-content:space-between; font-size:0.75rem; color:#bbb; margin-bottom:8px; font-weight:600; }
+.progress-bar-bg { height:6px; background:#fde; border-radius:99px; overflow:hidden; }
+.progress-bar-fill { height:100%; background:linear-gradient(90deg,#e91e63,#f06292); border-radius:99px; transition:width 0.5s ease; }
 
-  /* ─── BUTON ─── */
-  .btn {
-    width: 100%;
-    padding: 17px;
-    background: linear-gradient(135deg, #e91e63, #c2185b);
-    color: #fff;
-    border: none;
-    border-radius: 14px;
-    font-family: 'Nunito', sans-serif;
-    font-size: 1rem;
-    font-weight: 700;
-    cursor: pointer;
-    transition: transform 0.2s, box-shadow 0.2s;
-    box-shadow: 0 4px 20px rgba(233,30,99,0.3);
-    -webkit-appearance: none;
-    letter-spacing: 0.5px;
-  }
-  .btn:active { transform: scale(0.98); }
-  .btn.secondary {
-    background: linear-gradient(135deg, #f8bbd0, #f48fb1);
-    box-shadow: 0 4px 20px rgba(233,30,99,0.15);
-    margin-top: 12px;
-  }
+.options { display:flex; flex-direction:column; gap:11px; margin-bottom:26px; }
+.option {
+  padding:14px 18px; border:2px solid #f0d6e8; border-radius:12px;
+  font-size:0.92rem; color:#555; cursor:pointer; transition:all 0.2s;
+  background:#fff; text-align:left; font-family:'Nunito',sans-serif;
+  font-weight:600; -webkit-appearance:none;
+}
+.option.selected { border-color:#e91e63; background:#fde8f1; color:#e91e63; }
 
-  /* ─── PROGRESS ─── */
-  .progress-wrap {
-    margin-bottom: 28px;
-  }
-  .progress-label {
-    display: flex;
-    justify-content: space-between;
-    font-size: 0.75rem;
-    color: #bbb;
-    margin-bottom: 8px;
-    font-weight: 600;
-  }
-  .progress-bar-bg {
-    height: 6px;
-    background: #fde;
-    border-radius: 99px;
-    overflow: hidden;
-  }
-  .progress-bar-fill {
-    height: 100%;
-    background: linear-gradient(90deg, #e91e63, #f06292);
-    border-radius: 99px;
-    transition: width 0.5s ease;
-  }
+.result-icon  { text-align:center; font-size:4rem; margin-bottom:16px; }
+.result-score { text-align:center; font-size:3rem; font-weight:800; color:#e91e63; margin-bottom:8px; }
+.result-title { text-align:center; font-size:1.2rem; font-weight:700; color:#333; margin-bottom:10px; }
+.result-text  { text-align:center; font-size:0.85rem; color:#999; line-height:1.7; margin-bottom:28px; }
 
-  /* ─── SEÇENEKLER ─── */
-  .options { display: flex; flex-direction: column; gap: 11px; margin-bottom: 26px; }
+.loading-lines { margin:24px 0; }
+.loading-line  { font-size:0.82rem; color:#bbb; padding:4px 0; opacity:0; transition:opacity 0.4s; font-weight:600; }
+.loading-line.done { opacity:1; color:#e91e63; }
+.loading-line.done::before { content:"✓ "; }
+.bar-wrap { margin-top:24px; }
+.bar-bg   { height:8px; background:#fde; border-radius:99px; overflow:hidden; margin-bottom:10px; }
+.bar-fill { height:100%; width:0%; background:linear-gradient(90deg,#e91e63,#f06292); border-radius:99px; transition:width 0.4s ease; }
+.bar-label { text-align:center; font-size:0.78rem; color:#bbb; font-weight:600; }
 
-  .option {
-    padding: 14px 18px;
-    border: 2px solid #f0d6e8;
-    border-radius: 12px;
-    font-size: 0.92rem;
-    color: #555;
-    cursor: pointer;
-    transition: all 0.2s;
-    background: #fff;
-    text-align: left;
-    font-family: 'Nunito', sans-serif;
-    font-weight: 600;
-    -webkit-appearance: none;
-  }
-  .option:active, .option.selected {
-    border-color: #e91e63;
-    background: #fde8f1;
-    color: #e91e63;
-  }
+.screen { display:none; }
+.screen.active { display:block; }
 
-  /* ─── SONUÇ ─── */
-  .result-icon { text-align: center; font-size: 4rem; margin-bottom: 16px; }
-  .result-score {
-    text-align: center;
-    font-size: 3rem;
-    font-weight: 800;
-    color: #e91e63;
-    margin-bottom: 8px;
-  }
-  .result-title {
-    text-align: center;
-    font-size: 1.2rem;
-    font-weight: 700;
-    color: #333;
-    margin-bottom: 10px;
-  }
-  .result-text {
-    text-align: center;
-    font-size: 0.85rem;
-    color: #999;
-    line-height: 1.7;
-    margin-bottom: 28px;
-  }
+/* ════════════════════════════════
+   KARARMA GEÇIŞI
+════════════════════════════════ */
+#blackout {
+  position: fixed; inset:0; background:#000;
+  opacity:0; pointer-events:none;
+  transition:opacity 1.2s ease; z-index:999;
+}
+#blackout.active { opacity:1; }
 
-  /* ─── YÜKLEME ─── */
-  #screen-loading { display: none; }
-  .loading-lines { margin: 24px 0; }
-  .loading-line {
-    font-size: 0.82rem;
-    color: #bbb;
-    padding: 4px 0;
-    opacity: 0;
-    transition: opacity 0.4s;
-    font-weight: 600;
-  }
-  .loading-line.done { opacity: 1; color: #e91e63; }
-  .loading-line.done::before { content: "✓ "; }
+/* ════════════════════════════════
+   FOTOĞRAF & TEKLİF BÖLÜMÜ
+════════════════════════════════ */
+#proposal-wrapper {
+  position: fixed; inset:0;
+  background:#0a0a0a;
+  opacity:0; pointer-events:none;
+  transition:opacity 1s ease;
+  z-index:5;
+}
+#proposal-wrapper.visible { opacity:1; pointer-events:all; }
 
-  .bar-wrap { margin-top: 24px; }
-  .bar-bg {
-    height: 8px;
-    background: #fde;
-    border-radius: 99px;
-    overflow: hidden;
-    margin-bottom: 10px;
-  }
-  .bar-fill {
-    height: 100%;
-    width: 0%;
-    background: linear-gradient(90deg, #e91e63, #f06292);
-    border-radius: 99px;
-    transition: width 0.4s ease;
-  }
-  .bar-label {
-    text-align: center;
-    font-size: 0.78rem;
-    color: #bbb;
-    font-weight: 600;
-  }
+/* Slideshow */
+#slideshow { position:absolute; inset:0; }
+.slide { position:absolute; inset:0; opacity:0; transition:opacity 1.2s ease; }
+.slide.active { opacity:1; }
+.slide-bg-blur { position:absolute; inset:-5%; background-size:cover; background-position:center; filter:blur(18px) brightness(0.5); transform:scale(1.1); }
+.slide-img { position:absolute; inset:0; width:100%; height:100%; object-fit:contain; object-position:center; }
+.slide.active .slide-img { animation:kenBurnsImg 6s ease forwards; }
+.slide-overlay { position:absolute; inset:0; background:linear-gradient(to bottom,rgba(0,0,0,0.25) 0%,rgba(0,0,0,0) 30%,rgba(0,0,0,0) 55%,rgba(0,0,0,0.75) 100%); }
+.slide-caption { position:absolute; bottom:0; left:0; right:0; padding:30px 28px 110px; text-align:center; opacity:0; transform:translateY(16px); transition:opacity 0.9s ease 0.7s,transform 0.9s ease 0.7s; }
+.slide.active .slide-caption { opacity:1; transform:translateY(0); }
+.caption-text { font-family:'Playfair Display',serif; font-size:6.5vw; line-height:1.5; color:#fff; text-shadow:0 2px 20px rgba(0,0,0,0.9); }
+.caption-sub  { display:block; font-family:'Lato',sans-serif; font-weight:300; font-size:3.8vw; color:rgba(255,255,255,0.6); margin-top:8px; text-shadow:0 2px 10px rgba(0,0,0,0.8); }
 
-  /* ─── GEÇİŞ ─── */
-  .screen { display: none; }
-  .screen.active { display: block; }
+/* Progress dots */
+#dots { position:fixed; bottom:32px; left:50%; transform:translateX(-50%); display:flex; gap:7px; z-index:50; opacity:0; transition:opacity 0.5s; align-items:center; }
+#dots.visible { opacity:1; }
+.dot { width:5px; height:5px; border-radius:50%; background:rgba(255,255,255,0.3); transition:all 0.4s ease; flex-shrink:0; }
+.dot.active { background:#fff; transform:scale(1.6); }
+.dot.done   { background:rgba(255,255,255,0.55); }
 
-  #blackout {
-    position: fixed;
-    inset: 0;
-    background: #000;
-    opacity: 0;
-    pointer-events: none;
-    transition: opacity 1s ease;
-    z-index: 9999;
-  }
-  #blackout.active { opacity: 1; }
+/* Progress bar */
+#pbar { position:fixed; bottom:0; left:0; height:2px; width:0%; background:rgba(255,255,255,0.6); z-index:60; }
+
+/* Teklif */
+#proposal-screen {
+  position:fixed; inset:0; background:#0a0a0a;
+  display:flex; flex-direction:column; align-items:center; justify-content:center;
+  z-index:200; opacity:0; pointer-events:none; transition:opacity 2s ease; padding:40px 30px;
+}
+#proposal-screen.visible { opacity:1; pointer-events:all; }
+.prop-top { font-size:3vw; letter-spacing:6px; color:rgba(255,200,160,0.7); text-transform:uppercase; opacity:0; text-align:center; font-family:'Lato',sans-serif; }
+#proposal-screen.visible .prop-top { animation:fadeUp 1s ease 0.4s forwards; }
+.prop-question { font-family:'Dancing Script',cursive; font-size:14vw; color:#fff; text-align:center; line-height:1.25; margin-top:20px; opacity:0; }
+#proposal-screen.visible .prop-question { animation:fadeUp 1.2s ease 1s forwards; }
+.prop-sub { font-family:'Playfair Display',serif; font-style:italic; font-size:4.2vw; color:rgba(255,255,255,0.6); margin-top:20px; text-align:center; line-height:1.7; opacity:0; }
+#proposal-screen.visible .prop-sub { animation:fadeUp 1s ease 1.8s forwards; }
+.btn-group { display:flex; flex-direction:column; gap:16px; margin-top:50px; width:100%; max-width:300px; opacity:0; }
+#proposal-screen.visible .btn-group { animation:fadeUp 1s ease 2.6s forwards; }
+.btn-yes { padding:20px; background:linear-gradient(135deg,#c0392b,#e74c3c); color:#fff; border:none; border-radius:50px; font-family:'Dancing Script',cursive; font-size:7vw; cursor:pointer; box-shadow:0 4px 30px rgba(231,76,60,0.4); width:100%; -webkit-appearance:none; transition:transform 0.2s; }
+.btn-yes:active { transform:scale(0.97); }
+.btn-no { padding:16px; background:transparent; color:rgba(255,255,255,0.3); border:1px solid rgba(255,255,255,0.15); border-radius:50px; font-family:'Lato',sans-serif; font-size:4vw; letter-spacing:2px; cursor:pointer; width:100%; -webkit-appearance:none; position:fixed; }
+
+/* Teşekkür */
+#thankyou-screen {
+  position:fixed; inset:0; background:#0a0a0a;
+  display:flex; flex-direction:column; align-items:center; justify-content:center;
+  z-index:300; opacity:0; pointer-events:none; transition:opacity 2s ease; padding:40px 30px;
+}
+#thankyou-screen.visible { opacity:1; pointer-events:all; }
+.ty-text { font-family:'Dancing Script',cursive; font-size:14vw; color:#fff; text-align:center; line-height:1.35; opacity:0; position:relative; z-index:10; }
+#thankyou-screen.visible .ty-text { animation:fadeUp 1.5s ease 0.4s forwards; }
+.ty-sub  { font-family:'Playfair Display',serif; font-style:italic; font-size:4.5vw; color:rgba(255,200,180,0.85); margin-top:24px; text-align:center; line-height:1.7; opacity:0; position:relative; z-index:10; }
+#thankyou-screen.visible .ty-sub { animation:fadeUp 1s ease 1.4s forwards; }
+
+#hearts-container { position:fixed; inset:0; pointer-events:none; z-index:5; overflow:hidden; }
+.floating-heart   { position:absolute; bottom:-60px; pointer-events:none; animation:floatHeart linear forwards; }
+#confetti-canvas  { position:fixed; inset:0; pointer-events:none; z-index:8; }
+
+/* Animasyonlar */
+@keyframes fadeUp    { from{opacity:0;transform:translateY(28px)} to{opacity:1;transform:translateY(0)} }
+@keyframes kenBurnsImg { 0%{transform:scale(1.0)} 100%{transform:scale(1.10)} }
+@keyframes pulse     { 0%,100%{transform:scale(1)} 50%{transform:scale(1.25)} }
+@keyframes floatHeart{ 0%{transform:translateY(0) rotate(-10deg) scale(0.8);opacity:1} 100%{transform:translateY(-110vh) rotate(10deg) scale(1.3);opacity:0} }
 </style>
 </head>
 <body>
 
+<!-- ══ KARARMA ══ -->
 <div id="blackout"></div>
-<div class="card" id="main-card">
 
-  <!-- EKRAN 1: İSİM -->
-  <div class="screen active" id="screen-name">
-    <div class="logo">💞</div>
-    <div class="site-name">BağTest</div>
-    <div class="site-sub">İlişki Uyum Analizi · v2.4</div>
-    <h2>Partnerinizle aranızdaki bağ ne kadar güçlü?</h2>
-    <p class="desc">Bilimsel yöntemlerle hazırlanmış 4 soruluk testimizle ilişkinizin uyum skorunu öğrenin.</p>
-    <div class="input-wrap">
-      <input type="text" id="name-input" placeholder="Adınızı giriniz" autocomplete="off" />
-    </div>
-    <button class="btn" onclick="handleName()">Teste Başla →</button>
-  </div>
+<!-- ══ YOUTUBE GİZLİ ══ -->
+<div id="yt-player" style="position:fixed;width:1px;height:1px;top:0;left:-9999px;pointer-events:none;overflow:hidden;"></div>
 
-  <!-- EKRAN 2: SORULAR -->
-  <div class="screen" id="screen-questions">
-    <div class="progress-wrap">
-      <div class="progress-label">
-        <span id="q-label">Soru 1 / 4</span>
-        <span id="q-pct">%25</span>
+<!-- ══ ANKET ══ -->
+<div id="survey-wrapper">
+  <div class="card">
+
+    <div class="screen active" id="screen-name">
+      <div class="logo">💞</div>
+      <div class="site-name">BağTest</div>
+      <div class="site-sub">İlişki Uyum Analizi · v2.4</div>
+      <h2>Partnerinizle aranızdaki bağ ne kadar güçlü?</h2>
+      <p class="desc">Bilimsel yöntemlerle hazırlanmış testimizle ilişkinizin uyum skorunu öğrenin.</p>
+      <div class="input-wrap">
+        <input type="text" id="name-input" placeholder="Adınızı giriniz" autocomplete="off"/>
       </div>
-      <div class="progress-bar-bg">
-        <div class="progress-bar-fill" id="q-bar" style="width:25%"></div>
+      <button class="btn" onclick="handleName()">Teste Başla →</button>
+    </div>
+
+    <div class="screen" id="screen-questions">
+      <div class="progress-wrap">
+        <div class="progress-label">
+          <span id="q-label">Soru 1 / 18</span>
+          <span id="q-pct">%6</span>
+        </div>
+        <div class="progress-bar-bg">
+          <div class="progress-bar-fill" id="q-bar" style="width:6%"></div>
+        </div>
+      </div>
+      <h2 id="q-text"></h2>
+      <p class="desc" id="q-sub"></p>
+      <div class="options" id="q-options"></div>
+      <button class="btn" id="q-next" onclick="nextQuestion()" disabled>Devam Et →</button>
+    </div>
+
+    <div class="screen" id="screen-loading">
+      <div class="logo">🔬</div>
+      <div class="site-name">Analiz Ediliyor</div>
+      <div class="site-sub">Lütfen bekleyiniz...</div>
+      <div class="loading-lines">
+        <div class="loading-line" id="ll1">Cevaplar işleniyor</div>
+        <div class="loading-line" id="ll2">Uyum skoru hesaplanıyor</div>
+        <div class="loading-line" id="ll3">Bağ katsayısı ölçülüyor</div>
+        <div class="loading-line" id="ll4">Sonuçlar hazırlanıyor</div>
+      </div>
+      <div class="bar-wrap">
+        <div class="bar-bg"><div class="bar-fill" id="load-bar"></div></div>
+        <div class="bar-label" id="load-pct">%0</div>
       </div>
     </div>
-    <h2 id="q-text"></h2>
-    <p class="desc" id="q-sub"></p>
-    <div class="options" id="q-options"></div>
-    <button class="btn" id="q-next" onclick="nextQuestion()" disabled>Devam Et →</button>
-  </div>
 
-  <!-- EKRAN 3: YÜKLEME (MELİKE) -->
-  <div class="screen" id="screen-loading">
-    <div class="logo">🔬</div>
-    <div class="site-name">Analiz Ediliyor</div>
-    <div class="site-sub">Lütfen bekleyiniz...</div>
-    <div class="loading-lines">
-      <div class="loading-line" id="ll1">Cevaplar işleniyor</div>
-      <div class="loading-line" id="ll2">Uyum skoru hesaplanıyor</div>
-      <div class="loading-line" id="ll3">Bağ katsayısı ölçülüyor</div>
-      <div class="loading-line" id="ll4">Sonuçlar hazırlanıyor</div>
+    <div class="screen" id="screen-result">
+      <div class="result-icon">💑</div>
+      <div class="result-score">%94</div>
+      <div class="result-title">İlişkiniz Mükemmel!</div>
+      <p class="result-text">Analizimize göre partnerinizle uyumunuz son derece yüksek. Birbiriniz için biçilmiş kaftansınız.</p>
+      <button class="btn" onclick="restartTest()">Tekrar Dene</button>
+      <button class="btn secondary" onclick="restartTest()">Farklı İsimle Dene</button>
     </div>
-    <div class="bar-wrap">
-      <div class="bar-bg"><div class="bar-fill" id="load-bar"></div></div>
-      <div class="bar-label" id="load-pct">%0</div>
-    </div>
-  </div>
 
-  <!-- EKRAN 4: SONUÇ (DİĞERLERİ) -->
-  <div class="screen" id="screen-result">
-    <div class="result-icon">💑</div>
-    <div class="result-score">%94</div>
-    <div class="result-title">İlişkiniz Mükemmel!</div>
-    <p class="result-text">Analizimize göre partnerinizle uyumunuz son derece yüksek. Birbiriniz için biçilmiş kaftansınız.</p>
-    <button class="btn" onclick="restartTest()">Tekrar Dene</button>
-    <button class="btn secondary" onclick="restartTest()">Farklı İsimle Dene</button>
   </div>
+</div>
 
+<!-- ══ FOTOĞRAFLAR ══ -->
+<div id="proposal-wrapper">
+  <div id="slideshow"></div>
+  <div id="dots"></div>
+  <div id="pbar"></div>
+</div>
+
+<!-- ══ TEKLİF ══ -->
+<div id="proposal-screen">
+  <span class="prop-top">Melike'ye Özel</span>
+  <div class="prop-question">Benimle<br>Evlenir<br>Misin?</div>
+  <div class="prop-sub">4 yıldır her güzel anım seninle<br>oldu. Bundan sonra da seninle olsun.</div>
+  <div class="btn-group">
+    <button class="btn-yes" onclick="sayYes()">Evet, Evet, Evet! 💍</button>
+    <button class="btn-no" id="btn-no" ontouchstart="runAway(this)" onmouseover="runAway(this)" onclick="sayYes()">Hayır</button>
+  </div>
+</div>
+
+<!-- ══ TEŞEKKÜR ══ -->
+<div id="thankyou-screen">
+  <canvas id="confetti-canvas"></canvas>
+  <div id="hearts-container"></div>
+  <div class="ty-text">Seni<br>Seviyorum<br>Güzelim ♥</div>
+  <div class="ty-sub">Hayatımın geri kalanını<br>seninle geçirmek istiyorum.</div>
 </div>
 
 <script>
+/* ════════════════════════════════
+   ANKET
+════════════════════════════════ */
 const questions = [
-  {
-    text: "Partnerinizle kaç yıldır berabersiniz?",
-    sub: "Tanışma tarihinizi baz alabilirsiniz.",
-    options: ["1 yıldan az", "1-2 yıl", "3-4 yıl", "5 yıl ve üzeri"]
-  },
-  {
-    text: "İlk tanıştığınızda ne hissettiniz?",
-    sub: "O ilk ana dönün, içgüdüsel cevabı seçin.",
-    options: ["Pek etkilenmedim", "Biraz merak ettim", "Çok etkilendim", "İlk bakışta bir şeyler hissettim"]
-  },
-  {
-    text: "Partneriniz sizi en çok ne zaman mutlu eder?",
-    sub: "En sık yaşadığınız anı düşünün.",
-    options: ["Birlikte güldüğümüzde", "Zor anımda yanımda olduğunda", "Küçük sürprizler yaptığında", "Sadece yanında olduğumda"]
-  },
-  {
-    text: "Zor bir gün geçirdiğinizde partneriniz ne yapar?",
-    sub: "Genel davranışı nedir?",
-    options: ["Dinler ve anlamaya çalışır", "Çözüm önerileri sunar", "Yanımda sessizce oturur", "Güldürmeye çalışır"]
-  },
-  {
-    text: "En çok hangi konuda anlaşmazlık yaşarsınız?",
-    sub: "Her çiftte mutlaka bir konu vardır.",
-    options: ["Gelecek planları", "Zaman yönetimi", "İletişim tarzı", "Neredeyse hiç anlaşmazlık olmaz"]
-  },
-  {
-    text: "Partnerinizin en çok sevdiğiniz özelliği nedir?",
-    sub: "Aklınıza ilk gelen şeyi seçin.",
-    options: ["Dürüstlüğü", "Mizah anlayışı", "Anlayışlı ve sabırlı olması", "Her şeyi"]
-  },
-  {
-    text: "Birlikte en çok hangi aktiviteyi yaparsınız?",
-    sub: "En sık tekrarlanan aktiviteyi düşünün.",
-    options: ["Dizi & film izlemek", "Yemek yemek ve gezmek", "Konuşup sohbet etmek", "Her ikisi de eşit"]
-  },
-  {
-    text: "Partneriniz sizi ne kadar iyi tanır?",
-    sub: "Dürüst bir değerlendirme yapın.",
-    options: ["Yüzeysel olarak tanır", "Genel hatlarıyla tanır", "Oldukça iyi tanır", "Bazen kendimden daha iyi tanır"]
-  },
-  {
-    text: "Partnerinizle kavga ettikten sonra nasıl barışırsınız?",
-    sub: "Genel süreciniz nasıl?",
-    options: ["Biri özür diler", "İkimiz de konuşup hallederiz", "Zaman geçince kendiliğinden çözülür", "Zaten çok kavga etmeyiz"]
-  },
-  {
-    text: "İlişkinizde en önemli şey nedir?",
-    sub: "Önceliğiniz nerede?",
-    options: ["Güven", "İletişim", "Sevgi ve ilgi", "Hepsi eşit derecede önemli"]
-  },
-  {
-    text: "Partnerinizin hangi özelliği sizi güldürür?",
-    sub: "Aklınıza ilk gelen anı düşünün.",
-    options: ["Kendine özgü espri anlayışı", "Beklenmedik tepkileri", "Abartılı mimikleri", "Masum saçmalıkları"]
-  },
-  {
-    text: "Gelecekte birlikte nerede olmayı hayal ediyorsunuz?",
-    sub: "En çok arzu ettiğiniz tabloyu seçin.",
-    options: ["Büyük bir şehirde", "Küçük ve sakin bir yerde", "Seyahat ederek her yerde", "Önemli değil, birlikte olmak yeter"]
-  },
-  {
-    text: "Partneriniz için büyük bir fedakarlık yapar mısınız?",
-    sub: "İçten ve dürüst olun.",
-    options: ["Küçük fedakarlıklar yaparım", "Duruma göre değişir", "Büyük fedakarlıklar bile yapabilirim", "Zaten sürekli yapıyorum"]
-  },
-  {
-    text: "İlişkinizi tek bir kelimeyle nasıl tanımlarsınız?",
-    sub: "İlk aklınıza geleni seçin.",
-    options: ["Güvenli", "Tutkulu", "Huzurlu", "Tamamlayıcı"]
-  },
-  {
-    text: "Partneriniz bir şeye üzüldüğünde ne hissedersiniz?",
-    sub: "Duygusal tepkinizi değerlendirin.",
-    options: ["Ben de üzülürüm", "Çözüm bulmak isterim", "Yalnız olmadığını hissettirmek isterim", "İçim sızlar, ne yapacağımı bilirim"]
-  },
-  {
-    text: "Onunla geçirdiğiniz en sıradan an bile nasıl hissettirir?",
-    sub: "Günlük hayatı düşünün.",
-    options: ["Normal, sıradan", "Güzel ama bazen sıkıcı", "Her sıradan an özel gelir", "Yanında olmak her şeyi değiştirir"]
-  },
-  {
-    text: "Partneriniz için sürpriz yapar mısınız?",
-    sub: "Genel alışkanlığınızı değerlendirin.",
-    options: ["Pek yapmam", "Özel günlerde yaparım", "Ara sıra küçük sürprizler", "Fırsat buldukça mutlaka"]
-  },
-  {
-    text: "Hayatınızın geri kalanını nasıl hayal ediyorsunuz?",
-    sub: "En derin hissinizi seçin. Kimse görmüyor.",
-    options: ["Henüz çok erken", "Hâlâ karar vermedim", "Onunla olmak istiyorum", "Onunla, başka bir şeye gerek yok"]
-  }
+  { text:"Partnerinizle kaç yıldır berabersiniz?", sub:"Tanışma tarihinizi baz alabilirsiniz.", options:["1 yıldan az","1-2 yıl","3-4 yıl","5 yıl ve üzeri"] },
+  { text:"İlk tanıştığınızda ne hissettiniz?", sub:"O ilk ana dönün, içgüdüsel cevabı seçin.", options:["Pek etkilenmedim","Biraz merak ettim","Çok etkilendim","İlk bakışta bir şeyler hissettim"] },
+  { text:"Partneriniz sizi en çok ne zaman mutlu eder?", sub:"En sık yaşadığınız anı düşünün.", options:["Birlikte güldüğümüzde","Zor anımda yanımda olduğunda","Küçük sürprizler yaptığında","Sadece yanında olduğumda"] },
+  { text:"Zor bir gün geçirdiğinizde partneriniz ne yapar?", sub:"Genel davranışı nedir?", options:["Dinler ve anlamaya çalışır","Çözüm önerileri sunar","Yanımda sessizce oturur","Güldürmeye çalışır"] },
+  { text:"En çok hangi konuda anlaşmazlık yaşarsınız?", sub:"Her çiftte mutlaka bir konu vardır.", options:["Gelecek planları","Zaman yönetimi","İletişim tarzı","Neredeyse hiç anlaşmazlık olmaz"] },
+  { text:"Partnerinizin en çok sevdiğiniz özelliği nedir?", sub:"Aklınıza ilk gelen şeyi seçin.", options:["Dürüstlüğü","Mizah anlayışı","Anlayışlı ve sabırlı olması","Her şeyi"] },
+  { text:"Birlikte en çok hangi aktiviteyi yaparsınız?", sub:"En sık tekrarlanan aktiviteyi düşünün.", options:["Dizi & film izlemek","Yemek yemek ve gezmek","Konuşup sohbet etmek","Her ikisi de eşit"] },
+  { text:"Partneriniz sizi ne kadar iyi tanır?", sub:"Dürüst bir değerlendirme yapın.", options:["Yüzeysel olarak tanır","Genel hatlarıyla tanır","Oldukça iyi tanır","Bazen kendimden daha iyi tanır"] },
+  { text:"Partnerinizle kavga ettikten sonra nasıl barışırsınız?", sub:"Genel süreciniz nasıl?", options:["Biri özür diler","İkimiz de konuşup hallederiz","Zaman geçince kendiliğinden çözülür","Zaten çok kavga etmeyiz"] },
+  { text:"İlişkinizde en önemli şey nedir?", sub:"Önceliğiniz nerede?", options:["Güven","İletişim","Sevgi ve ilgi","Hepsi eşit derecede önemli"] },
+  { text:"Partnerinizin hangi özelliği sizi güldürür?", sub:"Aklınıza ilk gelen anı düşünün.", options:["Kendine özgü espri anlayışı","Beklenmedik tepkileri","Abartılı mimikleri","Masum saçmalıkları"] },
+  { text:"Gelecekte birlikte nerede olmayı hayal ediyorsunuz?", sub:"En çok arzu ettiğiniz tabloyu seçin.", options:["Büyük bir şehirde","Küçük ve sakin bir yerde","Seyahat ederek her yerde","Önemli değil, birlikte olmak yeter"] },
+  { text:"Partneriniz için büyük bir fedakarlık yapar mısınız?", sub:"İçten ve dürüst olun.", options:["Küçük fedakarlıklar yaparım","Duruma göre değişir","Büyük fedakarlıklar bile yapabilirim","Zaten sürekli yapıyorum"] },
+  { text:"İlişkinizi tek bir kelimeyle nasıl tanımlarsınız?", sub:"İlk aklınıza geleni seçin.", options:["Güvenli","Tutkulu","Huzurlu","Tamamlayıcı"] },
+  { text:"Partneriniz bir şeye üzüldüğünde ne hissedersiniz?", sub:"Duygusal tepkinizi değerlendirin.", options:["Ben de üzülürüm","Çözüm bulmak isterim","Yalnız olmadığını hissettirmek isterim","İçim sızlar, ne yapacağımı bilirim"] },
+  { text:"Onunla geçirdiğiniz en sıradan an bile nasıl hissettirir?", sub:"Günlük hayatı düşünün.", options:["Normal, sıradan","Güzel ama bazen sıkıcı","Her sıradan an özel gelir","Yanında olmak her şeyi değiştirir"] },
+  { text:"Partneriniz için sürpriz yapar mısınız?", sub:"Genel alışkanlığınızı değerlendirin.", options:["Pek yapmam","Özel günlerde yaparım","Ara sıra küçük sürprizler","Fırsat buldukça mutlaka"] },
+  { text:"Hayatınızın geri kalanını nasıl hayal ediyorsunuz?", sub:"En derin hissinizi seçin. Kimse görmüyor.", options:["Henüz çok erken","Hâlâ karar vermedim","Onunla olmak istiyorum","Onunla, başka bir şeye gerek yok"] }
 ];
 
 let currentQ = 0;
@@ -410,67 +325,53 @@ function showScreen(id) {
 function handleName() {
   const val = document.getElementById('name-input').value.trim().toLowerCase();
   if (!val) return;
-
-  isMelike = val === 'melike';
-
-  if (isMelike) {
-    currentQ = 0;
-    loadQuestion();
-    showScreen('screen-questions');
-  } else {
-    showScreen('screen-result');
-  }
+  isMelike = (val === 'melike');
+  if (isMelike) { currentQ = 0; loadQuestion(); showScreen('screen-questions'); }
+  else showScreen('screen-result');
 }
 
-document.getElementById('name-input').addEventListener('keydown', e => {
-  if (e.key === 'Enter') handleName();
-});
+document.getElementById('name-input').addEventListener('keydown', e => { if (e.key==='Enter') handleName(); });
 
 function loadQuestion() {
   const q = questions[currentQ];
-  document.getElementById('q-text').textContent = q.text;
-  document.getElementById('q-sub').textContent = q.sub;
   const total = questions.length;
   const pct = Math.round(((currentQ + 1) / total) * 100);
-  document.getElementById('q-label').textContent = `Soru ${currentQ + 1} / ${total}`;
-  document.getElementById('q-pct').textContent = `%${pct}`;
-  document.getElementById('q-bar').style.width = `${pct}%`;
+  document.getElementById('q-text').textContent = q.text;
+  document.getElementById('q-sub').textContent  = q.sub;
+  document.getElementById('q-label').textContent = `Soru ${currentQ+1} / ${total}`;
+  document.getElementById('q-pct').textContent   = `%${pct}`;
+  document.getElementById('q-bar').style.width   = pct + '%';
 
   const container = document.getElementById('q-options');
   container.innerHTML = '';
   selectedOption = null;
   document.getElementById('q-next').disabled = true;
 
-  q.options.forEach((opt, i) => {
+  q.options.forEach(opt => {
     const btn = document.createElement('button');
     btn.className = 'option';
     btn.textContent = opt;
-    btn.onclick = () => selectOption(btn);
+    btn.onclick = () => {
+      document.querySelectorAll('.option').forEach(o => o.classList.remove('selected'));
+      btn.classList.add('selected');
+      selectedOption = btn;
+      document.getElementById('q-next').disabled = false;
+    };
     container.appendChild(btn);
   });
-}
-
-function selectOption(btn) {
-  document.querySelectorAll('.option').forEach(o => o.classList.remove('selected'));
-  btn.classList.add('selected');
-  selectedOption = btn;
-  document.getElementById('q-next').disabled = false;
 }
 
 function nextQuestion() {
   if (!selectedOption) return;
   currentQ++;
-  if (currentQ < questions.length) {
-    loadQuestion();
-  } else {
-    startLoading();
-  }
+  if (currentQ < questions.length) loadQuestion();
+  else startLoading();
 }
 
 function startLoading() {
   showScreen('screen-loading');
   const lines = ['ll1','ll2','ll3','ll4'];
-  const pcts  = [20, 45, 75, 100];
+  const pcts  = [20, 50, 80, 100];
   const bar   = document.getElementById('load-bar');
   const pct   = document.getElementById('load-pct');
 
@@ -478,26 +379,236 @@ function startLoading() {
   function tick() {
     if (i < lines.length) {
       document.getElementById(lines[i]).classList.add('done');
-      bar.style.width  = pcts[i] + '%';
-      pct.textContent  = '%' + pcts[i];
+      bar.style.width = pcts[i] + '%';
+      pct.textContent = '%' + pcts[i];
       i++;
       setTimeout(tick, 900);
     } else {
+      // Müziği başlat (kullanıcı zaten butona bastı = etkileşim var)
+      playMusic();
+      // Karararak fotoğraflara geç
       setTimeout(() => {
         document.getElementById('blackout').classList.add('active');
         setTimeout(() => {
-          window.location.href = 'evlilik-teklifi.html';
+          document.getElementById('survey-wrapper').classList.add('hide');
+          document.getElementById('proposal-wrapper').classList.add('visible');
+          document.getElementById('dots').classList.add('visible');
+          buildSlides();
+          setTimeout(() => {
+            slideshowActive = true;
+            nextSlide();
+            document.getElementById('blackout').classList.remove('active');
+          }, 300);
         }, 1000);
-      }, 600);
+      }, 500);
     }
   }
-  setTimeout(tick, 500);
+  setTimeout(tick, 400);
 }
 
 function restartTest() {
   document.getElementById('name-input').value = '';
   showScreen('screen-name');
 }
+
+/* ════════════════════════════════
+   YOUTUBE MÜZİK
+════════════════════════════════ */
+var ytPlayer = null;
+var ytReady  = false;
+
+(function(){
+  var tag = document.createElement('script');
+  tag.src = 'https://www.youtube.com/iframe_api';
+  document.head.appendChild(tag);
+})();
+
+function onYouTubeIframeAPIReady() {
+  ytPlayer = new YT.Player('yt-player', {
+    width:'1', height:'1',
+    videoId:'jwP1HRmDVII',
+    playerVars:{ autoplay:0, controls:0, disablekb:1, fs:0, iv_load_policy:3, modestbranding:1, playsinline:1, rel:0, loop:1, playlist:'jwP1HRmDVII' },
+    events:{
+      onReady: function(e) { ytReady = true; }
+    }
+  });
+}
+
+function playMusic() {
+  if (ytReady && ytPlayer) {
+    ytPlayer.setVolume(70);
+    ytPlayer.playVideo();
+  } else {
+    setTimeout(playMusic, 300);
+  }
+}
+
+/* ════════════════════════════════
+   SLİDESHOW
+════════════════════════════════ */
+const slides = [
+  { img:"1.png",  text:"10 Mayıs 2021",               sub:"Her şey bu günle başladı..." },
+  { img:"2.png",  text:"İlk anlarımız",                sub:"Seni tanıdığım için ne kadar şanslıyım" },
+  { img:"3.png",  text:"Birlikte güldük",              sub:"Seninle her şey daha güzel" },
+  { img:"4.png",  text:"Maceralarımız başladı",        sub:"Yanında olmak en güzel his" },
+  { img:"5.png",  text:"Her gün daha çok sevdim",      sub:"Farkında bile olmadan..." },
+  { img:"6.png",  text:"Mutlu anlar",                  sub:"Seninle paylaşılan her an değerliydi" },
+  { img:"7.png",  text:"Zor günlerde yanındaydın",     sub:"Seninle her şey daha kolay oldu" },
+  { img:"8.png",  text:"Birlikte büyüdük",             sub:"Yıllar geçtikçe aramızdaki bağ güçlendi" },
+  { img:"9.png",  text:"Gülüşün beni büyülüyor",      sub:"Her gün seni görmeyi bekliyorum" },
+  { img:"10.png", text:"Seninle her yer güzel",        sub:"Mekan değil, insan önemli" },
+  { img:"11.png", text:"Anılar birikiyor",             sub:"Ve hepsi seninle" },
+  { img:"12.png", text:"Aklım hep sende",              sub:"Nereye gitsem seninle gidiyorum" },
+  { img:"13.png", text:"En güzel yolculuk",            sub:"Seninle geçen her dakika" },
+  { img:"14.png", text:"4 yıl geçti...",               sub:"Ve seni her gün daha çok seviyorum" },
+  { img:"15.png", text:"Şimdi sana sormak istiyorum",  sub:"..." }
+];
+
+let current = -1;
+let animating = false;
+let slideshowActive = false;
+let autoTimer = null;
+const SLIDE_DURATION = 6000;
+let slidesBuilt = false;
+
+function buildSlides() {
+  if (slidesBuilt) return;
+  slidesBuilt = true;
+  const container = document.getElementById('slideshow');
+  const dotsEl    = document.getElementById('dots');
+  slides.forEach((s, i) => {
+    const el = document.createElement('div');
+    el.className = 'slide'; el.id = 'slide-'+i;
+    el.innerHTML = `
+      <div class="slide-bg-blur" style="background-image:url('${s.img}')"></div>
+      <img class="slide-img" src="${s.img}"/>
+      <div class="slide-overlay"></div>
+      <div class="slide-caption">
+        <div class="caption-text">${s.text}</div>
+        <span class="caption-sub">${s.sub}</span>
+      </div>`;
+    container.appendChild(el);
+    const dot = document.createElement('div');
+    dot.className='dot'; dot.id='dot-'+i;
+    dotsEl.appendChild(dot);
+  });
+}
+
+function nextSlide() {
+  if (animating) return;
+  animating = true;
+  clearTimeout(autoTimer);
+
+  if (current >= 0) {
+    document.getElementById('slide-'+current)?.classList.remove('active');
+    const od = document.getElementById('dot-'+current);
+    if (od) { od.classList.remove('active'); od.classList.add('done'); }
+  }
+  current++;
+
+  if (current >= slides.length) { showProposal(); animating=false; return; }
+
+  document.getElementById('slide-'+current)?.classList.add('active');
+  const dot = document.getElementById('dot-'+current);
+  if (dot) dot.classList.add('active');
+  startProgressBar();
+  setTimeout(() => { animating=false; }, 1400);
+  autoTimer = setTimeout(nextSlide, SLIDE_DURATION);
+}
+
+function startProgressBar() {
+  const bar = document.getElementById('pbar');
+  bar.style.transition = 'none'; bar.style.width = '0%';
+  requestAnimationFrame(() => requestAnimationFrame(() => {
+    bar.style.transition = `width ${SLIDE_DURATION}ms linear`;
+    bar.style.width = '100%';
+  }));
+}
+
+function showProposal() {
+  clearTimeout(autoTimer);
+  document.getElementById('pbar').style.width = '0%';
+  document.getElementById('proposal-wrapper').style.opacity = '0';
+  document.getElementById('dots').classList.remove('visible');
+  setTimeout(() => { document.getElementById('proposal-screen').classList.add('visible'); }, 800);
+}
+
+function sayYes() {
+  const p = document.getElementById('proposal-screen');
+  p.style.opacity='0'; p.style.pointerEvents='none';
+  setTimeout(() => {
+    p.style.display='none';
+    document.getElementById('thankyou-screen').classList.add('visible');
+    startHearts(); startConfetti();
+  }, 1200);
+}
+
+function runAway(btn) {
+  const x = Math.random() * (window.innerWidth - 240);
+  const y = Math.random() * (window.innerHeight - 60);
+  btn.style.left=x+'px'; btn.style.top=y+'px';
+  btn.style.right='auto'; btn.style.bottom='auto';
+  btn.style.transition='left 0.25s,top 0.25s';
+  btn.style.width='240px';
+}
+
+function startHearts() {
+  const c = document.getElementById('hearts-container');
+  const e = ['❤️','💕','💖','💗','💝','💍','✨','🌹'];
+  setInterval(() => {
+    const h = document.createElement('div');
+    h.className='floating-heart';
+    h.textContent = e[Math.floor(Math.random()*e.length)];
+    h.style.left = (Math.random()*90)+'vw';
+    h.style.fontSize = (1.2+Math.random()*2)+'rem';
+    h.style.animationDuration = (3.5+Math.random()*3)+'s';
+    c.appendChild(h);
+    setTimeout(()=>h.remove(),7000);
+  },350);
+}
+
+function startConfetti() {
+  const canvas = document.getElementById('confetti-canvas');
+  canvas.width=window.innerWidth; canvas.height=window.innerHeight;
+  const ctx=canvas.getContext('2d');
+  const colors=['#e74c3c','#e91e63','#ff9800','#ffffff','#f06292','#ab47bc','#ffb300','#ff6b6b'];
+  const pieces=Array.from({length:200},()=>({
+    x:Math.random()*canvas.width, y:-20-Math.random()*300,
+    w:7+Math.random()*8, h:3+Math.random()*5,
+    color:colors[Math.floor(Math.random()*colors.length)],
+    rot:Math.random()*Math.PI*2,
+    vx:(Math.random()-0.5)*4, vy:2+Math.random()*4, vr:(Math.random()-0.5)*0.15
+  }));
+  function draw(){
+    ctx.clearRect(0,0,canvas.width,canvas.height);
+    let alive=false;
+    pieces.forEach(p=>{
+      p.x+=p.vx; p.y+=p.vy; p.vy+=0.06; p.rot+=p.vr;
+      if(p.y<canvas.height+60) alive=true;
+      ctx.save(); ctx.translate(p.x,p.y); ctx.rotate(p.rot);
+      ctx.fillStyle=p.color; ctx.fillRect(-p.w/2,-p.h/2,p.w,p.h);
+      ctx.restore();
+    });
+    if(alive) requestAnimationFrame(draw);
+  }
+  draw();
+}
+
+// Dokunma ile slayt geçişi
+let touchStartX=0, touchStartY=0;
+document.addEventListener('touchstart', e=>{
+  touchStartX=e.changedTouches[0].clientX;
+  touchStartY=e.changedTouches[0].clientY;
+},{passive:true});
+document.addEventListener('touchend', e=>{
+  if (!slideshowActive) return;
+  const dx=e.changedTouches[0].clientX-touchStartX;
+  const dy=e.changedTouches[0].clientY-touchStartY;
+  const isP=document.getElementById('proposal-screen').classList.contains('visible');
+  const isT=document.getElementById('thankyou-screen').classList.contains('visible');
+  if(isP||isT) return;
+  if(Math.abs(dx)>30||(Math.abs(dx)<10&&Math.abs(dy)<10)) nextSlide();
+},{passive:true});
 </script>
 </body>
 </html>
