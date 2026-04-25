@@ -481,27 +481,27 @@ function onYouTubeIframeAPIReady() {
     playerVars: {
       autoplay: 1, controls: 0, disablekb: 1,
       fs: 0, iv_load_policy: 3, modestbranding: 1,
-      playsinline: 1, rel: 0,
+      playsinline: 1, rel: 0, mute: 1,
       loop: 1, playlist: 'jwP1HRmDVII'
     },
     events: {
       onReady: function(e) {
         ytReady = true;
-        e.target.setVolume(70);
-        e.target.playVideo();
+        e.target.playVideo(); // sessiz başlar, tarayıcı izin verir
       }
     }
   });
 }
 
-// İlk dokunuşta müziği başlat (mobil autoplay kısıtlaması için)
-function startMusicOnFirstTouch() {
-  playMusic();
-  document.removeEventListener('touchstart', startMusicOnFirstTouch);
-  document.removeEventListener('click', startMusicOnFirstTouch);
+// İlk dokunuşta sesi aç
+function unmuteOnFirstTouch() {
+  if (ytPlayer && ytReady) {
+    ytPlayer.unMute();
+    ytPlayer.setVolume(70);
+  }
 }
-document.addEventListener('touchstart', startMusicOnFirstTouch, { once: true, passive: true });
-document.addEventListener('click', startMusicOnFirstTouch, { once: true });
+document.addEventListener('touchstart', unmuteOnFirstTouch, { once: true, passive: true });
+document.addEventListener('click',      unmuteOnFirstTouch, { once: true });
 
 // Slaytları oluştur
 function buildSlides() {
@@ -605,12 +605,12 @@ function runAway(btn) {
   btn.style.width  = bw + 'px';
 }
 
-// Müzik — otomatik başlar
+// Müzik (yedek — startShow'dan çağrılmaz artık)
 function playMusic() {
   if (ytReady && ytPlayer) {
+    ytPlayer.unMute();
+    ytPlayer.setVolume(70);
     ytPlayer.playVideo();
-  } else {
-    setTimeout(playMusic, 400);
   }
 }
 
