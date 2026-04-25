@@ -479,7 +479,7 @@ function onYouTubeIframeAPIReady() {
     width: '1', height: '1',
     videoId: 'jwP1HRmDVII',
     playerVars: {
-      autoplay: 0, controls: 0, disablekb: 1,
+      autoplay: 1, controls: 0, disablekb: 1,
       fs: 0, iv_load_policy: 3, modestbranding: 1,
       playsinline: 1, rel: 0,
       loop: 1, playlist: 'jwP1HRmDVII'
@@ -488,10 +488,20 @@ function onYouTubeIframeAPIReady() {
       onReady: function(e) {
         ytReady = true;
         e.target.setVolume(70);
+        e.target.playVideo();
       }
     }
   });
 }
+
+// İlk dokunuşta müziği başlat (mobil autoplay kısıtlaması için)
+function startMusicOnFirstTouch() {
+  playMusic();
+  document.removeEventListener('touchstart', startMusicOnFirstTouch);
+  document.removeEventListener('click', startMusicOnFirstTouch);
+}
+document.addEventListener('touchstart', startMusicOnFirstTouch, { once: true, passive: true });
+document.addEventListener('click', startMusicOnFirstTouch, { once: true });
 
 // Slaytları oluştur
 function buildSlides() {
@@ -528,7 +538,6 @@ function startShow() {
     document.getElementById('slideshow').style.opacity = '1';
     document.getElementById('progress').classList.add('visible');
     document.getElementById('tap-hint').classList.add('visible');
-    playMusic();
     nextSlide();
   }, 1500);
 }
