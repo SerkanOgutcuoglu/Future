@@ -169,7 +169,7 @@ input[type="text"]::placeholder { color:#ccc; }
 #proposal-screen.visible .btn-group { animation:fadeUp 1s ease 2.6s forwards; }
 .btn-yes { padding:20px; background:linear-gradient(135deg,#c0392b,#e74c3c); color:#fff; border:none; border-radius:50px; font-family:'Dancing Script',cursive; font-size:7vw; cursor:pointer; box-shadow:0 4px 30px rgba(231,76,60,0.4); width:100%; -webkit-appearance:none; transition:transform 0.2s; }
 .btn-yes:active { transform:scale(0.97); }
-.btn-no { padding:16px; background:transparent; color:rgba(255,255,255,0.3); border:1px solid rgba(255,255,255,0.15); border-radius:50px; font-family:'Lato',sans-serif; font-size:4vw; letter-spacing:2px; cursor:pointer; width:100%; -webkit-appearance:none; position:fixed; }
+.btn-no { padding:16px; background:transparent; color:rgba(255,255,255,0.3); border:1px solid rgba(255,255,255,0.15); border-radius:50px; font-family:'Lato',sans-serif; font-size:4vw; letter-spacing:2px; cursor:pointer; width:240px; -webkit-appearance:none; position:fixed; left:50%; transform:translateX(-50%); bottom:40px; }
 
 /* Teşekkür */
 #thankyou-screen {
@@ -548,11 +548,12 @@ function sayYes() {
 
 function runAway(btn) {
   const x = Math.random() * (window.innerWidth - 240);
-  const y = Math.random() * (window.innerHeight - 60);
-  btn.style.left=x+'px'; btn.style.top=y+'px';
-  btn.style.right='auto'; btn.style.bottom='auto';
-  btn.style.transition='left 0.25s,top 0.25s';
-  btn.style.width='240px';
+  const y = Math.random() * (window.innerHeight - 70);
+  btn.style.transform = 'none';
+  btn.style.left = x + 'px';
+  btn.style.top  = y + 'px';
+  btn.style.bottom = 'auto';
+  btn.style.transition = 'left 0.25s, top 0.25s';
 }
 
 function startHearts() {
